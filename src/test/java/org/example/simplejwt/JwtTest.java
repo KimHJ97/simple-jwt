@@ -37,7 +37,7 @@ public class JwtTest {
 
 			assertThat(jwt).isNotEmpty();
 			assertThat(jwt).isEqualTo(
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImlzc3VlZEF0IjoxNzIyMzE3NDAwLCJpc3N1ZXIiOiLquYDtmqjspIAiLCJleHBpcmF0b24iOjE3MjIzMTc0MDB9.44UZNWXnrUP5iIyTiK1pYozYlFvnu8oNrskXfRrRjzQ");
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAiLCJleHBpcmF0b24iOjQxMDI0MTIzNDB9.hGQOLolsDtynUzCpGIex3XLcPOX7b9i3G--ir0zYcYQ");
 		}
 
 		@Test
