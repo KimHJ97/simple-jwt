@@ -4,16 +4,38 @@
 
  - Maven
 ```xml
-<dependency>
-    <groupId></groupId>
-    <artifactId></artifactId>
-    <version></version>
-</dependency>
+<project>
+    <repositories>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.github.KimHJ97</groupId>
+            <artifactId>simple-jwt</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+    </dependencies>
+</project>
 ```
 
  - Gradle
 ```groovy
-implementation ''
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.KimHJ97:simple-jwt:1.0.4'
+}
 ```
 
 ## How to Use
