@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.example'
@@ -13,6 +14,18 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.example'
+            artifactId = 'simple-jwt'
+            version = '1.0.0'
+
+            from components.java
+        }
+    }
 }
 
 dependencies {
