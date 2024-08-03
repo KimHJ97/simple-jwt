@@ -50,13 +50,22 @@ public class JwtParser {
 				throw new JwtException(JwtErrorCode.INVALID_TOKEN);
 			}
 
-			// 토큰 만료기간 검증
+			// 토큰 만료기간 & 유효시작시간 검증
 			String payloadJson = JwtSupporter.decodeBase64ToString(payloadBase64, StandardCharsets.UTF_8);
 			Payload payload = new Payload(JwtSupporter.readValue(payloadJson, Map.class));
-			ZonedDateTime expiration = payload.getExpiration(ZoneId.systemDefault());
 
-			if (expiration.isBefore(ZonedDateTime.now())) {
-				throw new JwtException(JwtErrorCode.EXPIRED_TOKEN);
+			ZonedDateTime expiration = payload.getExpiration(ZoneId.systemDefault());
+			if (!Objects.isNull(expiration)) {
+				if (expiration.isBefore(ZonedDateTime.now())) {
+					throw new JwtException(JwtErrorCode.EXPIRED_TOKEN);
+				}
+			}
+
+			ZonedDateTime notBeforeAt = payload.getNotBeforeAt(ZoneId.systemDefault());
+			if (!Objects.isNull(notBeforeAt)) {
+				if (notBeforeAt.isAfter(ZonedDateTime.now())) {
+					throw new JwtException(JwtErrorCode.NOT_BEFORE_TOKEN);
+				}
 			}
 		}
 

@@ -31,6 +31,7 @@ public class JwtException extends RuntimeException {
 	public enum JwtErrorCode {
 		INVALID_TOKEN("The token is invalid."),
 		EXPIRED_TOKEN("The token has expired."),
+		NOT_BEFORE_TOKEN("The token cannot be used before the specified time."),
 		UNSUPPORTED_TOKEN("The token type is not supported."),
 		MALFORMED_TOKEN("The token is malformed."),
 		INVALID_SIGNATURE("The token signature is invalid."),
