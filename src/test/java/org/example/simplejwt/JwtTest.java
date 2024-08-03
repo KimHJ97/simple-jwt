@@ -9,6 +9,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Base64;
 
+import javax.crypto.SecretKey;
+
 import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtComponenet.Header;
 import org.example.simplejwt.JwtComponenet.Payload;
@@ -19,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 public class JwtTest {
 
-	public static final String HMAC256_SECRET_KEY = "DVQhGbZB20pzk1vRXxJLzxtlrWz5kkAIp84y0i+9MJo=";
+	public static final String HMAC256_SECRET_KEY = "pxMLQ4yBbjjdjPKwoF7tQynFe1mzaBKSSt_ECwRGknE=";
 
 	@Nested
 	@DisplayName("JWT 생성 테스트")
@@ -38,7 +40,7 @@ public class JwtTest {
 
 			assertThat(jwt).isNotEmpty();
 			assertThat(jwt).isEqualTo(
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImV4cGlyYXRpb24iOjQxMDI0MTIzNDAsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAifQ.z9J-fUtKSPhXyyxTWSE3jKZicbiCeBgJzltGvhDMUSk");
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImV4cGlyYXRpb24iOjQxMDI0MTIzNDAsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAifQ.AQwhk3CFuprrDILScEDy1MxNc39UiEaZm_FDijeDIEk");
 		}
 
 		@Test
