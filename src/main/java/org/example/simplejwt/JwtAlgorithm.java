@@ -17,6 +17,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.example.simplejwt.JWT.Algorithm;
+import org.example.simplejwt.JwtException.JwtErrorCode;
 
 public class JwtAlgorithm {
 
@@ -33,7 +34,7 @@ public class JwtAlgorithm {
 				case RS256, RS384, RS512 -> new RsaAlgorithmService(algorithm, key);
 				case ES256, ES384, ES512 -> new EcdsaAlgorithmService(algorithm, key);
 				case PS256, PS384, PS512 -> new RsassaPssAlgorithmService(algorithm, key);
-				default -> throw new RuntimeException("Unsupported algorithm: " + algorithm);
+				default -> throw new JwtException(JwtErrorCode.UNSUPPORTED_ALGORITHM, "Unsupported algorithm: " + algorithm);
 			};
 		}
 
@@ -55,7 +56,7 @@ public class JwtAlgorithm {
 				KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 				return keyFactory.generatePrivate(keySpec);
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
 	}
@@ -81,7 +82,7 @@ public class JwtAlgorithm {
 				mac.init(secretKeySpec);
 				return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
 			} catch (NoSuchAlgorithmException | InvalidKeyException e) {
-				throw new RuntimeException(e);
+				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
 	}
@@ -106,7 +107,7 @@ public class JwtAlgorithm {
 				signature.update(data.getBytes(StandardCharsets.UTF_8));
 				return signature.sign();
 			} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-				throw new RuntimeException(e);
+				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
 	}
@@ -131,7 +132,7 @@ public class JwtAlgorithm {
 				signature.update(data.getBytes(StandardCharsets.UTF_8));
 				return signature.sign();
 			} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-				throw new RuntimeException(e);
+				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
 	}
@@ -160,7 +161,7 @@ public class JwtAlgorithm {
 				return signature.sign();
 			} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException |
 					 InvalidAlgorithmParameterException e) {
-				throw new RuntimeException(e);
+				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
 	}

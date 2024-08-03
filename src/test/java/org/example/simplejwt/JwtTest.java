@@ -12,6 +12,7 @@ import java.util.Base64;
 import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtComponenet.Header;
 import org.example.simplejwt.JwtComponenet.Payload;
+import org.example.simplejwt.JwtException.JwtErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,23 @@ public class JwtTest {
 			assertThat(jwt).isNotEmpty();
 			assertThat(jwt).isEqualTo(
 				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImV4cGlyYXRpb24iOjQxMDI0MTIzNDAsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAifQ.z9J-fUtKSPhXyyxTWSE3jKZicbiCeBgJzltGvhDMUSk");
+		}
+
+		@Test
+		@DisplayName("HMAC256 알고리즘을 사용한 JWT 생성 실패 - 시크릿 키 없음")
+		void createJwtWithHMAC256_fail_requiredSecretKey() throws Exception {
+			assertThatThrownBy(() -> {
+				String jwt = JWT.builder()
+					.algorithm(Algorithm.HS256)
+					.issuer("김효준")
+					.subject("subject")
+					.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+					.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+					.build();
+			}).isInstanceOf(JwtException.class)
+				.hasMessageContaining("The SecretKey is required.")
+				.extracting(e -> ((JwtException) e).getErrorCode())
+				.isEqualTo(JwtErrorCode.SECRET_KEY_REQUIRED);
 		}
 
 		@Test
@@ -137,8 +155,10 @@ public class JwtTest {
 			assertThatThrownBy(() -> {
 				JWT.parser().signedKey(HMAC256_SECRET_KEY)
 					.payload(token);
-			}).isInstanceOf(IllegalArgumentException.class)
-				.hasMessageContaining("The token has expired");
+			}).isInstanceOf(JwtException.class)
+				.hasMessageContaining("The token has expired")
+				.extracting(e -> ((JwtException) e).getErrorCode())
+				.isEqualTo(JwtErrorCode.EXPIRED_TOKEN);
 		}
 
 		@Test
@@ -158,8 +178,10 @@ public class JwtTest {
 			assertThatThrownBy(() -> {
 				JWT.parser().signedKey(diffrentSignedKey)
 					.payload(token);
-			}).isInstanceOf(IllegalArgumentException.class)
-				.hasMessageContaining("Invalid JWT token");
+			}).isInstanceOf(JwtException.class)
+				.hasMessageContaining("The token is invalid.")
+				.extracting(e -> ((JwtException) e).getErrorCode())
+				.isEqualTo(JwtErrorCode.INVALID_TOKEN);
 		}
 	}
 

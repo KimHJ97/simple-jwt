@@ -17,7 +17,7 @@ class JwtSupporter {
 		try {
 			return objectMapper.writeValueAsString(value);
 		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
+			throw new JwtException(JwtException.JwtErrorCode.PARSING_ERROR, e);
 		}
 	}
 
@@ -25,7 +25,7 @@ class JwtSupporter {
 		try {
 			return objectMapper.readValue(value, clazz);
 		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
+			throw new JwtException(JwtException.JwtErrorCode.PARSING_ERROR, e);
 		}
 	}
 

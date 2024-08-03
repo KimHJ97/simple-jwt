@@ -100,10 +100,10 @@ public class JwtBuilder {
 
 	private void validateRequiredFields() {
 		if (Objects.isNull(secretKey)) {
-			throw new IllegalArgumentException("secretKey is required");
+			throw new JwtException(JwtException.JwtErrorCode.SECRET_KEY_REQUIRED);
 		}
 		if (Objects.isNull(algorithm)) {
-			throw new IllegalArgumentException("algorithm is required");
+			throw new JwtException(JwtException.JwtErrorCode.ALGORITHM_REQUIRED);
 		}
 	}
 

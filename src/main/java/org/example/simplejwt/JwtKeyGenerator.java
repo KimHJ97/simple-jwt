@@ -9,6 +9,8 @@ import java.security.spec.ECGenParameterSpec;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.example.simplejwt.JwtException.JwtErrorCode;
+
 public class JwtKeyGenerator {
 
 	public static KeyPair generateRsaKeyPair(String algorithm, int keySize) {
@@ -18,7 +20,7 @@ public class JwtKeyGenerator {
 
 			return keyPairGenerator.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Error generating RSA key pair", e);
+			throw new JwtException(JwtErrorCode.KEY_GENERATION_FAILURE, e, "Error generating RSA key pair");
 		}
 	}
 
@@ -30,7 +32,7 @@ public class JwtKeyGenerator {
 
 			return keyPairGenerator.generateKeyPair();
 		} catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-			throw new RuntimeException("Error generating EC key pair", e);
+			throw new JwtException(JwtErrorCode.KEY_GENERATION_FAILURE, e, "Error generating EC key pair");
 		}
 	}
 
@@ -39,7 +41,7 @@ public class JwtKeyGenerator {
 			KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
 			return keyGenerator.generateKey();
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Error generating HMAC key", e);
+			throw new JwtException(JwtErrorCode.KEY_GENERATION_FAILURE, e, "Error generating HMAC key");
 		}
 	}
 }

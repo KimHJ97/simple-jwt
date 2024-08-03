@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtAlgorithm.AlgorithmExecutor;
+import org.example.simplejwt.JwtException.JwtErrorCode;
 
 public class JwtComponenet {
 
@@ -81,7 +82,7 @@ public class JwtComponenet {
 				return ZonedDateTime.ofInstant(instant, zoneId);
 			}
 
-			throw new RuntimeException("Expiration must be an instance of Long or Integer");
+			throw new JwtException(JwtErrorCode.PARSING_ERROR, "Expiration must be an instance of Long or Integer");
 		}
 
 		public ZonedDateTime getNotBeforeAt(ZoneId zoneId) {
@@ -98,7 +99,7 @@ public class JwtComponenet {
 				return ZonedDateTime.ofInstant(instant, zoneId);
 			}
 
-			throw new RuntimeException("NotBeforeAt must be an instance of Long or Integer");
+			throw new JwtException(JwtErrorCode.PARSING_ERROR, "NotBeforeAt must be an instance of Long or Integer");
 		}
 
 		public ZonedDateTime getIssuedAt(ZoneId zoneId) {
@@ -115,7 +116,7 @@ public class JwtComponenet {
 				return ZonedDateTime.ofInstant(instant, zoneId);
 			}
 
-			throw new RuntimeException("IssuedAt must be an instance of Long or Integer");
+			throw new JwtException(JwtErrorCode.PARSING_ERROR, "IssuedAt must be an instance of Long or Integer");
 		}
 
 		public <T> T getClaim(String claimName, Class<T> clazz) {
@@ -126,7 +127,7 @@ public class JwtComponenet {
 			if (clazz.isInstance(value)) {
 				return (T)value;
 			}
-			throw new ClassCastException(claimName + " is not of type " + clazz.getName());
+			throw new JwtException(JwtErrorCode.CLASS_CAST_ERROR, claimName + " is not of type " + clazz.getName());
 		}
 	}
 

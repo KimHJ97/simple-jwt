@@ -1,5 +1,13 @@
 # simple-jwt
 
+## Features
+
+ - Generate JSON Web Token
+ - Parse JSON Web Token (extract header and payload)
+ - Validate JSON Web Token
+ - Generate HmacSHA SecretKey
+ - Generate RSA, EC key pairs (private key and public key)
+
 ## How to Start
 
  - Maven
@@ -47,15 +55,15 @@ String secretKeyBase64 = Base64.getEncoder().encodeToString(secretKey.getEncoded
 
 // 2. Create Json Web Token
 String jwt = JWT.builder()
-	.algorithm(Algorithm.ES256)
-	.secretKey(privateKey)
-	.issuer("HongGilDong")
-	.subject("user-token")
-    .claim("age", 20)
-	.claim("isAdmin", true)
-	.issuedAt(ZonedDateTime.of(LocalDateTime.of(2024, 7, 30, 14, 30), ZoneId.of("Asia/Seoul")))
-	.expiraton(ZonedDateTime.of(LocalDateTime.of(2024, 7, 30, 14, 30), ZoneId.of("Asia/Seoul")))
-	.build();
+        .algorithm(Algorithm.ES256)
+        .secretKey(secretKey)
+        .issuer("HongGilDong")
+        .subject("user-token")
+        .claim("age", 20)
+        .claim("isAdmin", true)
+        .issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+        .expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+        .build();
 
 // 3. Extract Json Web Token
 Payload payload = JWT.parser().signedKey(HMAC256_SECRET_KEY)
@@ -65,6 +73,33 @@ String issuer = payload.getIssuer();
 String subject = payload.getSubject();
 int age = payload.getClaim("age", Integer.class);
 boolean isAdmin = payload.getClaim("isAdmin", Boolean.class);
+```
+
+### Exception Handling
+
+__JwtException__ is a custom exception that includes an error code from the __JwtErrorCode__ enum, which helps identify specific JWT-related issues. This allows for precise error handling and improved debugging.
+
+```java
+try {
+    String jwt = JWT.builder()
+        .algorithm(Algorithm.ES256)
+        .secretKey(privateKey)
+        .issuer("HongGilDong")
+        .issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+        .expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+        .build();
+    
+    Payload payload = JWT.parser()
+        .signedKey(secretKey)
+        .payload(jwt);
+} catch (JwtException e) {
+    JwtErrorCode errorCode = e.getErrorCode();
+    switch (errorCode) {
+        case INVALID_CLAIMS -> throw new IllegalArgumentException("The token is invalid.");
+        case INVALID_SIGNATURE -> throw new IllegalArgumentException("The signature is invalid.");
+        default -> throw new RuntimeException("An unknown error occurred.");
+    }
+}
 ```
 
 ## Planned Updates

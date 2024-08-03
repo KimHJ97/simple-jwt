@@ -10,9 +10,7 @@ import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtAlgorithm.AlgorithmExecutor;
 import org.example.simplejwt.JwtComponenet.Header;
 import org.example.simplejwt.JwtComponenet.Payload;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.simplejwt.JwtException.JwtErrorCode;
 
 public class JwtParser {
 
@@ -25,7 +23,7 @@ public class JwtParser {
 
 		public SignedKeyProcessor(String signedKey) {
 			if (Objects.isNull(signedKey)) {
-				throw new IllegalArgumentException("signedKey cannot be null");
+				throw new JwtException(JwtErrorCode.SIGNED_KEY_REQUIRED);
 			}
 
 			this.signedKey = signedKey;
@@ -34,7 +32,7 @@ public class JwtParser {
 		private void validateJsonWebToken(String token) {
 			String[] parts = token.split("\\.");
 			if (parts.length != 3) {
-				throw new IllegalArgumentException("Invalid JWT token");
+				throw new JwtException(JwtErrorCode.INVALID_TOKEN);
 			}
 
 			String headerBase64 = parts[0];
@@ -52,7 +50,7 @@ public class JwtParser {
 			String expectedSignature = JwtSupporter.encodeBase64ToStringWithoutPadding(hash);
 
 			if (!expectedSignature.equals(signature)) {
-				throw new IllegalArgumentException("Invalid JWT token");
+				throw new JwtException(JwtErrorCode.INVALID_TOKEN);
 			}
 
 			// 토큰 만료기간 검증
@@ -60,9 +58,8 @@ public class JwtParser {
 			Payload payload = new Payload(JwtSupporter.readValue(payloadJson, Map.class));
 			ZonedDateTime expiration = payload.getExpiration(ZoneId.systemDefault());
 			if (expiration.isBefore(ZonedDateTime.now())) {
-				throw new IllegalArgumentException("The token has expired");
+				throw new JwtException(JwtErrorCode.EXPIRED_TOKEN);
 			}
-
 		}
 
 		public Header header(String token) {
@@ -70,12 +67,7 @@ public class JwtParser {
 			String headerBase64 = token.split("\\.")[0];
 			String headerJson = JwtSupporter.decodeBase64ToString(headerBase64, StandardCharsets.UTF_8);
 
-			try {
-				ObjectMapper objectMapper = new ObjectMapper();
-				return objectMapper.readValue(headerJson, Header.class);
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
+			return JwtSupporter.readValue(headerJson, Header.class);
 		}
 
 		public Payload payload(String token) {
@@ -83,12 +75,7 @@ public class JwtParser {
 			String payloadBase64 = token.split("\\.")[1];
 			String payloadJson = JwtSupporter.decodeBase64ToString(payloadBase64, StandardCharsets.UTF_8);
 
-			try {
-				ObjectMapper objectMapper = new ObjectMapper();
-				return new Payload(objectMapper.readValue(payloadJson, Map.class));
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
+			return new Payload(JwtSupporter.readValue(payloadJson, Map.class));
 		}
 	}
 }
