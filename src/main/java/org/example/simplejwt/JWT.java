@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
+import org.example.simplejwt.JwtException.JwtErrorCode;
+
 public class JWT {
 
 	/**
@@ -31,7 +33,7 @@ public class JWT {
 	public static SecretKey generateSecretKey(Algorithm algorithm) {
 		return switch (algorithm) {
 			case HS256, HS384, HS512 -> JwtKeyGenerator.generateHmacSecretKey(algorithm.fullName);
-			default -> throw new IllegalArgumentException("algorithm not supported");
+			default -> throw new JwtException(JwtErrorCode.UNSUPPORTED_ALGORITHM);
 		};
 	}
 
@@ -43,17 +45,17 @@ public class JWT {
 	 */
 	public static KeyPair generateKeyPair(Algorithm algorithm, KeySize keySize) {
 		if (Objects.isNull(algorithm)) {
-			throw new IllegalArgumentException("algorithm cannot be null");
+			throw new JwtException(JwtErrorCode.ALGORITHM_REQUIRED);
 		}
 		if (Objects.isNull(keySize)) {
-			throw new IllegalArgumentException("keySize cannot be null");
+			throw new JwtException(JwtErrorCode.KEY_SIZE_REQUIRED);
 		}
 
 		return switch (algorithm) {
 			case RS256, RS384, RS512,
 				 PS256, PS384, PS512 -> JwtKeyGenerator.generateRsaKeyPair(algorithm.shortName, keySize.size);
 			case ES256, ES384, ES512 -> JwtKeyGenerator.generateEcdsaKeyPair(algorithm.shortName, keySize.size);
-			default -> throw new IllegalArgumentException("algorithm not supported");
+			default -> throw new JwtException(JwtErrorCode.UNSUPPORTED_ALGORITHM);
 		};
 	}
 

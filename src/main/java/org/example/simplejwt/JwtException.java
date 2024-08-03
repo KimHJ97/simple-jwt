@@ -39,6 +39,7 @@ public class JwtException extends RuntimeException {
 		PARSING_ERROR("Error occurred during token parsing."),
 		SECRET_KEY_REQUIRED("The SecretKey is required."),
 		ALGORITHM_REQUIRED("The Algorithm is required."),
+		KEY_SIZE_REQUIRED("The Key Size is required."),
 		SIGNED_KEY_REQUIRED("The Signed Key is required."),
 		UNSUPPORTED_ALGORITHM("The algorithm is not supported."),
 		KEY_GENERATION_FAILURE("Error occurred during key generation."),

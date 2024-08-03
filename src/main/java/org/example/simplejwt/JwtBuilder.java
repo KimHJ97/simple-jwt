@@ -3,7 +3,6 @@ package org.example.simplejwt;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.time.ZonedDateTime;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,12 +26,12 @@ public class JwtBuilder {
 	}
 
 	public JwtBuilder secretKey(SecretKey secretKey) {
-		this.secretKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+		this.secretKey = JwtSupporter.encodeBase64ToString(secretKey.getEncoded());
 		return this;
 	}
 
 	public JwtBuilder secretKey(PrivateKey privateKey) {
-		this.secretKey = Base64.getEncoder().encodeToString(privateKey.getEncoded());
+		this.secretKey = JwtSupporter.encodeBase64ToString(privateKey.getEncoded());
 		return this;
 	}
 

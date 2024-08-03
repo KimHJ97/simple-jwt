@@ -57,6 +57,7 @@ public class JwtParser {
 			String payloadJson = JwtSupporter.decodeBase64ToString(payloadBase64, StandardCharsets.UTF_8);
 			Payload payload = new Payload(JwtSupporter.readValue(payloadJson, Map.class));
 			ZonedDateTime expiration = payload.getExpiration(ZoneId.systemDefault());
+
 			if (expiration.isBefore(ZonedDateTime.now())) {
 				throw new JwtException(JwtErrorCode.EXPIRED_TOKEN);
 			}

@@ -51,7 +51,7 @@ public class JwtAlgorithm {
 
 		default PrivateKey getPrivateKeyFromBase64(String key, String algorithm) {
 			try {
-				byte[] keyBytes = Base64.getDecoder().decode(key);
+				byte[] keyBytes = JwtSupporter.decodeBase64(key);
 				PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
 				KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 				return keyFactory.generatePrivate(keySpec);
@@ -77,7 +77,7 @@ public class JwtAlgorithm {
 		public byte[] sign(String data) {
 			try {
 				Mac mac = Mac.getInstance(algorithm.fullName());
-				SecretKeySpec secretKeySpec = new SecretKeySpec(Base64.getDecoder().decode(secretKey),
+				SecretKeySpec secretKeySpec = new SecretKeySpec(JwtSupporter.decodeBase64(secretKey),
 					algorithm.fullName());
 				mac.init(secretKeySpec);
 				return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
