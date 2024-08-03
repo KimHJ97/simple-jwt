@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.time.ZonedDateTime;
 import java.util.Base64;
-import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,8 +19,6 @@ public class JwtBuilder {
 	private String secretKey;
 	private Algorithm algorithm;
 	private Map<String, Object> claims = new HashMap<>();
-
-	public static final Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
 
 	/* Builder */
 	public JwtBuilder secretKey(String secretKey) {
@@ -59,8 +56,8 @@ public class JwtBuilder {
 		return this;
 	}
 
-	public JwtBuilder expiraton(ZonedDateTime expiraton) {
-		this.claims.put("expiraton", expiraton.toEpochSecond());
+	public JwtBuilder expiration(ZonedDateTime expiration) {
+		this.claims.put("expiration", expiration.toEpochSecond());
 		return this;
 	}
 
@@ -85,15 +82,17 @@ public class JwtBuilder {
 
 		// 2. Create Header
 		Header header = new Header(this.algorithm);
-		String headerBase64 = base64Encoder.encodeToString(header.toJson().getBytes(StandardCharsets.UTF_8));
+		String headerBase64 = JwtSupporter.encodeBase64ToStringWithoutPadding(
+			header.toJson().getBytes(StandardCharsets.UTF_8));
 
 		// 3. Create Payload
 		Payload payload = new Payload(this.claims);
-		String payloadBase64 = base64Encoder.encodeToString(payload.toJson().getBytes(StandardCharsets.UTF_8));
+		String payloadBase64 = JwtSupporter.encodeBase64ToStringWithoutPadding(
+			payload.toJson().getBytes(StandardCharsets.UTF_8));
 
 		// 4. Create Signature
 		Signature signature = new Signature(headerBase64, payloadBase64, secretKey, algorithm);
-		String signatureHashBase64 = base64Encoder.encodeToString(signature.toHash());
+		String signatureHashBase64 = JwtSupporter.encodeBase64ToStringWithoutPadding(signature.toHash());
 
 		// 5. Return JWT(HEADER.PAYLOAD.SIGNATURE)
 		return headerBase64 + "." + payloadBase64 + "." + signatureHashBase64;

@@ -9,12 +9,7 @@ import java.util.Objects;
 import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtAlgorithm.AlgorithmExecutor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class JwtComponenet {
-
-	public static ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
 	 * JWT Header
@@ -31,11 +26,7 @@ public class JwtComponenet {
 		}
 
 		public String toJson() {
-			try {
-				return objectMapper.writeValueAsString(this);
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
+			return JwtSupporter.writeValueAsString(this);
 		}
 
 		public String getAlg() {
@@ -58,12 +49,7 @@ public class JwtComponenet {
 		}
 
 		public String toJson() {
-			try {
-				System.out.println(objectMapper.writeValueAsString(this.claims));
-				return objectMapper.writeValueAsString(this.claims);
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
+			return JwtSupporter.writeValueAsString(this.claims);
 		}
 
 		public String getIssuer() {
@@ -82,16 +68,16 @@ public class JwtComponenet {
 		}
 
 		public ZonedDateTime getExpiration(ZoneId zoneId) {
-			Object value = claims.get("expiraton");
+			Object value = claims.get("expiration");
 			if (Objects.isNull(value)) {
 				return null;
 			}
 
-			if (value instanceof Long expiraton) {
-				Instant instant = Instant.ofEpochSecond(expiraton);
+			if (value instanceof Long expiration) {
+				Instant instant = Instant.ofEpochSecond(expiration);
 				return ZonedDateTime.ofInstant(instant, zoneId);
-			} else if (value instanceof Integer expiraton) {
-				Instant instant = Instant.ofEpochSecond(expiraton);
+			} else if (value instanceof Integer expiration) {
+				Instant instant = Instant.ofEpochSecond(expiration);
 				return ZonedDateTime.ofInstant(instant, zoneId);
 			}
 

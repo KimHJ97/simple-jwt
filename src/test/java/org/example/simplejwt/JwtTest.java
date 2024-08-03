@@ -32,12 +32,12 @@ public class JwtTest {
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			assertThat(jwt).isNotEmpty();
 			assertThat(jwt).isEqualTo(
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAiLCJleHBpcmF0b24iOjQxMDI0MTIzNDB9.hGQOLolsDtynUzCpGIex3XLcPOX7b9i3G--ir0zYcYQ");
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImV4cGlyYXRpb24iOjQxMDI0MTIzNDAsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAifQ.z9J-fUtKSPhXyyxTWSE3jKZicbiCeBgJzltGvhDMUSk");
 		}
 
 		@Test
@@ -51,7 +51,7 @@ public class JwtTest {
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			assertThat(jwt).isNotEmpty();
@@ -68,7 +68,7 @@ public class JwtTest {
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			assertThat(jwt).isNotEmpty();
@@ -87,7 +87,7 @@ public class JwtTest {
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			Header header = JWT.parser().signedKey(HMAC256_SECRET_KEY)
@@ -108,7 +108,7 @@ public class JwtTest {
 				.claim("age", 20)
 				.claim("isAdmin", true)
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			Payload payload = JWT.parser().signedKey(HMAC256_SECRET_KEY)
@@ -131,7 +131,7 @@ public class JwtTest {
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			assertThatThrownBy(() -> {
@@ -152,7 +152,7 @@ public class JwtTest {
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
-				.expiraton(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+				.expiration(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.build();
 
 			assertThatThrownBy(() -> {
