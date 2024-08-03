@@ -11,7 +11,6 @@ import java.security.SignatureException;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.PSSParameterSpec;
-import java.util.Base64;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -41,6 +40,10 @@ public class JwtAlgorithm {
 		public byte[] execute(String value) {
 			return algorithmService.sign(value);
 		}
+
+		public boolean verify(String data, String exprectedSignature) {
+			return algorithmService.verify(data, exprectedSignature);
+		}
 	}
 
 	/**
@@ -48,6 +51,7 @@ public class JwtAlgorithm {
 	 */
 	public interface AlgorithmService {
 		byte[] sign(String value);
+		boolean verify(String data, String exprectedSignature);
 
 		default PrivateKey getPrivateKeyFromBase64(String key, String algorithm) {
 			try {
@@ -85,6 +89,13 @@ public class JwtAlgorithm {
 				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
+
+		@Override
+		public boolean verify(String data, String exprectedSignature) {
+			byte[] hash = sign(data);
+			String signature = JwtSupporter.encodeBase64ToStringWithoutPadding(hash);
+			return signature.equals(exprectedSignature);
+		}
 	}
 
 	/**
@@ -110,6 +121,11 @@ public class JwtAlgorithm {
 				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
 		}
+
+		@Override
+		public boolean verify(String data, String exprectedSignature) {
+			return false;
+		}
 	}
 
 	/**
@@ -134,6 +150,11 @@ public class JwtAlgorithm {
 			} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
 				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
+		}
+
+		@Override
+		public boolean verify(String data, String exprectedSignature) {
+			return false;
 		}
 	}
 
@@ -163,6 +184,11 @@ public class JwtAlgorithm {
 					 InvalidAlgorithmParameterException e) {
 				throw new JwtException(JwtErrorCode.SIGNATURE_ERROR, e);
 			}
+		}
+
+		@Override
+		public boolean verify(String data, String exprectedSignature) {
+			return false;
 		}
 	}
 

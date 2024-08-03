@@ -46,10 +46,7 @@ public class JwtParser {
 
 			// 토큰에 Signature와 SignedKey를 통해 토큰의 Header, Payload로 새롭게 만든 Signature가 동일한지 검증
 			AlgorithmExecutor algorithmExecutor = new AlgorithmExecutor(algorithm, signedKey);
-			byte[] hash = algorithmExecutor.execute(headerBase64 + "." + payloadBase64);
-			String expectedSignature = JwtSupporter.encodeBase64ToStringWithoutPadding(hash);
-
-			if (!expectedSignature.equals(signature)) {
+			if (!algorithmExecutor.verify(headerBase64 + "." + payloadBase64, signature)) {
 				throw new JwtException(JwtErrorCode.INVALID_TOKEN);
 			}
 
