@@ -67,7 +67,7 @@ public class JwtTest {
 
 			String jwt = JWT.builder()
 				.algorithm(Algorithm.ES256)
-				.secretKey(privateKey)
+				.privateKey(privateKey)
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -84,7 +84,7 @@ public class JwtTest {
 
 			String jwt = JWT.builder()
 				.algorithm(Algorithm.RS256)
-				.secretKey(privateKey)
+				.privateKey(privateKey)
 				.issuer("김효준")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))

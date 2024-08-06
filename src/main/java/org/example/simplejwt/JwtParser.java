@@ -1,6 +1,7 @@
 package org.example.simplejwt;
 
 import java.nio.charset.StandardCharsets;
+import java.security.PublicKey;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtAlgorithm.AlgorithmExecutor;
+import org.example.simplejwt.JwtAlgorithm.AlgorithmKeyType;
 import org.example.simplejwt.JwtComponenet.Header;
 import org.example.simplejwt.JwtComponenet.Payload;
 import org.example.simplejwt.JwtException.JwtErrorCode;
@@ -16,6 +18,10 @@ public class JwtParser {
 
 	public static SignedKeyProcessor signedKey(String signedKey) {
 		return new SignedKeyProcessor(signedKey);
+	}
+
+	public static SignedKeyProcessor publicKey(PublicKey publicKey) {
+		return new SignedKeyProcessor(JwtSupporter.encodeBase64ToString(publicKey.getEncoded()));
 	}
 
 	public static class SignedKeyProcessor {
@@ -45,7 +51,7 @@ public class JwtParser {
 			Algorithm algorithm = Algorithm.valueOf(header.getAlg());
 
 			// 토큰에 Signature와 SignedKey를 통해 토큰의 Header, Payload로 새롭게 만든 Signature가 동일한지 검증
-			AlgorithmExecutor algorithmExecutor = new AlgorithmExecutor(algorithm, signedKey);
+			AlgorithmExecutor algorithmExecutor = new AlgorithmExecutor(algorithm, signedKey, AlgorithmKeyType.of(algorithm, false));
 			if (!algorithmExecutor.verify(headerBase64 + "." + payloadBase64, signature)) {
 				throw new JwtException(JwtErrorCode.INVALID_TOKEN);
 			}

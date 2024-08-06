@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.example'
-version = '1.0.5'
+version = '1.0.6'
 
 java {
     toolchain {
@@ -22,7 +22,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'org.example'
             artifactId = 'simple-jwt'
-            version = '1.0.5'
+            version = '1.0.6'
 
             from components.java
         }

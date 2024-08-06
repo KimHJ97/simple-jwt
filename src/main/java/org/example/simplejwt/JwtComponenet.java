@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import org.example.simplejwt.JWT.Algorithm;
 import org.example.simplejwt.JwtAlgorithm.AlgorithmExecutor;
+import org.example.simplejwt.JwtAlgorithm.AlgorithmKeyType;
 import org.example.simplejwt.JwtException.JwtErrorCode;
 
 public class JwtComponenet {
@@ -137,16 +138,16 @@ public class JwtComponenet {
 	public static class Signature {
 		private String header;
 		private String payload;
-		private String secretkey;
+		private String key;
 		private Algorithm algorithm;
 		private AlgorithmExecutor algorithmExecutor;
 
-		public Signature(String header, String payload, String secretkey, Algorithm algorithm) {
+		public Signature(String header, String payload, String key, Algorithm algorithm) {
 			this.header = header;
 			this.payload = payload;
-			this.secretkey = secretkey;
+			this.key = key;
 			this.algorithm = algorithm;
-			this.algorithmExecutor = new AlgorithmExecutor(algorithm, secretkey);
+			this.algorithmExecutor = new AlgorithmExecutor(algorithm, key, AlgorithmKeyType.of(algorithm, true));
 		}
 
 		public byte[] toHash() {

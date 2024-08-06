@@ -3,6 +3,7 @@
 ## Features
 
  - Generate JSON Web Token
+   - Algorithm Supported: HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512, PS256, PS384, PS512 
  - Parse JSON Web Token (extract header and payload)
  - Validate JSON Web Token
  - Generate HmacSHA SecretKey
@@ -28,7 +29,7 @@
         <dependency>
             <groupId>com.github.KimHJ97</groupId>
             <artifactId>simple-jwt</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </dependency>
     </dependencies>
 </project>
@@ -42,12 +43,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.KimHJ97:simple-jwt:1.0.4'
+    implementation 'com.github.KimHJ97:simple-jwt:1.0.6'
 }
 ```
 
 ## How to Use
 
+ - HS256 Algorithm Usage
 ```java
 // 1. Create HS256 Secret Key
 SecretKey secretKey = JWT.generateSecretKey(Algorithm.HS256);
@@ -68,6 +70,34 @@ String jwt = JWT.builder()
 // 3. Extract Json Web Token
 Payload payload = JWT.parser().signedKey(HMAC256_SECRET_KEY)
 	.payload(token);
+
+String issuer = payload.getIssuer();
+String subject = payload.getSubject();
+int age = payload.getClaim("age", Integer.class);
+boolean isAdmin = payload.getClaim("isAdmin", Boolean.class);
+```
+ - ES256 Algorithm Usage
+```java
+// 1. Create KeyPair(PrivateKey, PublicKey)
+KeyPair keyPair = JWT.generateKeyPair(JWT.Algorithm.ES256, JWT.KeySize.LOW);
+PrivateKey privateKey = keyPair.getPrivate();
+PublicKey publicKey = keyPair.getPublic();
+
+// 2. Create Json Web Token
+String jwt = JWT.builder()
+	.algorithm(Algorithm.ES256)
+	.privateKey(privateKey)
+	.issuer("HongGilDong")
+	.subject("user-token")
+	.claim("age", 20)
+	.claim("isAdmin", true)
+	.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+	.expiraton(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
+	.build();
+
+// 3. Extract Json Web Token
+Payload payload = JWT.parser().publicKey(publicKey)
+        .payload(token);
 
 String issuer = payload.getIssuer();
 String subject = payload.getSubject();
@@ -104,12 +134,4 @@ try {
 
 ## Planned Updates
 
-- **RS256 Algorithm Support**: Implementation of the RS256 (RSA Signature with SHA-256) algorithm for enhanced security and compatibility with various systems.
-- **RS384 Algorithm Support**: Implementation of the RS384 (RSA Signature with SHA-384) algorithm for enhanced security and compatibility with various systems.
-- **RS512 Algorithm Support**: Implementation of the RS512 (RSA Signature with SHA-RS512) algorithm for enhanced security and compatibility with various systems.
-- **ES256 Algorithm Support**: Addition of the ES256 (ECDSA using P-256 and SHA-256) algorithm to provide stronger security with elliptic curve cryptography.
-- **ES384 Algorithm Support**: Addition of the ES384 (ECDSA using P-384 and SHA-384) algorithm to provide stronger security with elliptic curve cryptography.
-- **ES512 Algorithm Support**: Addition of the ES512 (ECDSA using P-512 and SHA-512) algorithm to provide stronger security with elliptic curve cryptography.
-- **PS256 Algorithm Support**: Introduction of the PS256 (RSASSA-PSS using SHA-256 and MGF1 with SHA-256) algorithm for improved security through probabilistic signature scheme.
-- **PS384 Algorithm Support**: Introduction of the PS384 (RSASSA-PSS using SHA-384 and MGF1 with SHA-384) algorithm for improved security through probabilistic signature scheme.
-- **PS512 Algorithm Support**: Introduction of the PS512 (RSASSA-PSS using SHA-512 and MGF1 with SHA-512) algorithm for improved security through probabilistic signature scheme.
+ - To Be Determined

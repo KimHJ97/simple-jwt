@@ -30,7 +30,7 @@ public class JwtBuilder {
 		return this;
 	}
 
-	public JwtBuilder secretKey(PrivateKey privateKey) {
+	public JwtBuilder privateKey(PrivateKey privateKey) {
 		this.secretKey = JwtSupporter.encodeBase64ToString(privateKey.getEncoded());
 		return this;
 	}
