@@ -1,5 +1,6 @@
 plugins {
     id 'maven-publish'
+    id 'jacoco'
 }
 
 publishing {
@@ -18,4 +19,34 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
+
+/* jacoco 설정 */
+// jacoco 버전 & 분석 리포트 경로 설정
+jacoco {
+    toolVersion = "0.8.10"
+    reportsDirectory = layout.buildDirectory.dir('jacocoReport')
+}
+
+// jacoco 분석 리포트 설정
+jacocoTestReport {
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = file("${buildDir}/jacocoHtml")
+    }
+}
+
+// jacoco 커버리지 기준 설정(해당 요건 불충족시 빌드 실패)
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.60
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
