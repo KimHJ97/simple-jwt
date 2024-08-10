@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.github.KimHJ97</groupId>
             <artifactId>simple-jwt</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </dependency>
     </dependencies>
 </project>
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.KimHJ97:simple-jwt:1.0.6'
+    implementation 'com.github.KimHJ97:simple-jwt:1.0.7'
 }
 ```
 
