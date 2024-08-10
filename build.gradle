@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.example'
-version = '1.0.6'
+version = '1.0.7'
 
 java {
     toolchain {
@@ -21,25 +21,29 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'org.example'
-            artifactId = 'simple-jwt'
-            version = '1.0.6'
+            artifactId = 'simple-jwt-core'
+            version = '1.0.7'
 
             from components.java
         }
     }
 }
 
-dependencies {
-    // JSON Mapper
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.3'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.3'
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
 
-    // Test
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.3'
-    testImplementation 'org.assertj:assertj-core:3.25.3'
+subprojects {
+    apply plugin: 'java'
+
+    dependencies {
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.3'
+        testImplementation 'org.assertj:assertj-core:3.25.3'
+    }
 }
 
 tasks.named('test') {

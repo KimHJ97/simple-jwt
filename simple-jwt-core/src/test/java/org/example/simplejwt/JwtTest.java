@@ -32,7 +32,7 @@ public class JwtTest {
 			String jwt = JWT.builder()
 				.algorithm(Algorithm.HS256)
 				.secretKey(HMAC256_SECRET_KEY)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -40,7 +40,7 @@ public class JwtTest {
 
 			assertThat(jwt).isNotEmpty();
 			assertThat(jwt).isEqualTo(
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImV4cGlyYXRpb24iOjQxMDI0MTIzNDAsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLquYDtmqjspIAifQ.AQwhk3CFuprrDILScEDy1MxNc39UiEaZm_FDijeDIEk");
+				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijoic3ViamVjdCIsImV4cGlyYXRpb24iOjQxMDI0MTIzNDAsImlzc3VlZEF0Ijo0MTAyNDEyMzQwLCJpc3N1ZXIiOiLtmY3quLjrj5kifQ.nAK-FufW7rvZnufhjaLw6YP7qCV0aqzUWRAUi7N57mY");
 		}
 
 		@Test
@@ -49,7 +49,7 @@ public class JwtTest {
 			assertThatThrownBy(() -> {
 				String jwt = JWT.builder()
 					.algorithm(Algorithm.HS256)
-					.issuer("김효준")
+					.issuer("홍길동")
 					.subject("subject")
 					.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 					.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -68,7 +68,7 @@ public class JwtTest {
 			String jwt = JWT.builder()
 				.algorithm(Algorithm.ES256)
 				.privateKey(privateKey)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -85,7 +85,7 @@ public class JwtTest {
 			String jwt = JWT.builder()
 				.algorithm(Algorithm.RS256)
 				.privateKey(privateKey)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -104,7 +104,7 @@ public class JwtTest {
 			String token = JWT.builder()
 				.algorithm(Algorithm.HS256)
 				.secretKey(HMAC256_SECRET_KEY)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.expiration(ZonedDateTime.of(LocalDateTime.of(2099, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -123,7 +123,7 @@ public class JwtTest {
 			String token = JWT.builder()
 				.algorithm(Algorithm.HS256)
 				.secretKey(HMAC256_SECRET_KEY)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.claim("age", 20)
 				.claim("isAdmin", true)
@@ -134,7 +134,7 @@ public class JwtTest {
 			Payload payload = JWT.parser().signedKey(HMAC256_SECRET_KEY)
 				.payload(token);
 
-			assertThat(payload.getIssuer()).isEqualTo("김효준");
+			assertThat(payload.getIssuer()).isEqualTo("홍길동");
 			assertThat(payload.getSubject()).isEqualTo("subject");
 			assertThat(payload.getClaim("age", Integer.class)).isEqualTo(20);
 			assertThat(payload.getClaim("isAdmin", Boolean.class)).isEqualTo(true);
@@ -148,7 +148,7 @@ public class JwtTest {
 			String token = JWT.builder()
 				.algorithm(Algorithm.HS256)
 				.secretKey(HMAC256_SECRET_KEY)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.expiration(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
@@ -171,7 +171,7 @@ public class JwtTest {
 			String token = JWT.builder()
 				.algorithm(Algorithm.HS256)
 				.secretKey(HMAC256_SECRET_KEY)
-				.issuer("김효준")
+				.issuer("홍길동")
 				.subject("subject")
 				.issuedAt(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))
 				.expiration(ZonedDateTime.of(LocalDateTime.of(2020, 12, 31, 23, 59), ZoneId.of("Asia/Seoul")))

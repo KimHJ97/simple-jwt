@@ -9,4 +9,4 @@ before_install:
 
 install:
   - chmod +x ./gradlew
-  - ./gradlew build publishToMavenLocal
+  - ./gradlew :simple-jwt-core:build :simple-jwt-core:publishToMavenLocal

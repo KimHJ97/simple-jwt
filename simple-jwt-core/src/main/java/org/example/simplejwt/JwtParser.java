@@ -16,11 +16,11 @@ import org.example.simplejwt.JwtException.JwtErrorCode;
 
 public class JwtParser {
 
-	public static SignedKeyProcessor signedKey(String signedKey) {
+	public SignedKeyProcessor signedKey(String signedKey) {
 		return new SignedKeyProcessor(signedKey);
 	}
 
-	public static SignedKeyProcessor publicKey(PublicKey publicKey) {
+	public SignedKeyProcessor publicKey(PublicKey publicKey) {
 		return new SignedKeyProcessor(JwtSupporter.encodeBase64ToString(publicKey.getEncoded()));
 	}
 
